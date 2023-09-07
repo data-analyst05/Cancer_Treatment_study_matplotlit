@@ -9,7 +9,7 @@
 # - Add your analysis here.
 #  
 
-# In[3]:
+# In[42]:
 
 
 # Dependencies and Setup
@@ -29,10 +29,10 @@ study_results = pd.read_csv(study_results_path)
 merged_data = pd.merge(study_results, mouse_metadata, on="Mouse ID", how="left")
 
 # Display the data table for preview
-merged_data
+# merged_data
 
 
-# In[4]:
+# In[43]:
 
 
 # Checking the number of mice.
@@ -40,7 +40,7 @@ unique_mice_count = len(merged_data["Mouse ID"].unique())
 unique_mice_count
 
 
-# In[5]:
+# In[44]:
 
 
 # Our data should be uniquely identified by Mouse ID and Timepoint
@@ -49,7 +49,7 @@ duplicate_mouse = merged_data[merged_data.duplicated(subset=["Mouse ID", "Timepo
 duplicate_mouse
 
 
-# In[6]:
+# In[45]:
 
 
 # Optional: Get all the data for the duplicate mouse ID. 
@@ -57,17 +57,20 @@ duplicate_mouse_data = merged_data[merged_data["Mouse ID"] =="g989"]
 duplicate_mouse_data
 
 
-# In[7]:
+# In[51]:
 
 
 # Create a clean DataFrame by dropping the duplicate mouse by its ID.
-cleaned_data = merged_data[merged_data["Mouse ID"].isin(duplicate_mouse_data) == False]
+cleaned_data = merged_data.loc[merged_data["Mouse ID"].isin(duplicate_mouse) == False]
 cleaned_data
+
+# cleaned_data = merged_data.loc[merged_data["Mouse ID"].isin(duplicate_mouse) == False]
+# cleaned_data
 # cleaned_data = merged_data.drop_duplicates(subset=["Mouse ID", "Timepoint"])
 # cleaned_data
 
 
-# In[8]:
+# In[52]:
 
 
 # Checking the number of mice in the clean DataFrame.
@@ -77,7 +80,7 @@ unique_mice_count_cleaned
 
 # ## Summary Statistics
 
-# In[16]:
+# In[53]:
 
 
 # Generate a summary statistics table of mean, median, variance, standard deviation, and SEM of the tumor volume for each regimen
@@ -105,7 +108,7 @@ summary_statistics = summary_statistics.rename(columns={
 summary_statistics
 
 
-# In[20]:
+# In[54]:
 
 
 # A more advanced method to generate a summary statistics table of mean, median, variance, standard deviation,
@@ -119,7 +122,7 @@ summary_statistics_sl
 
 # ## Bar and Pie Charts
 
-# In[28]:
+# In[55]:
 
 
 # Generate a bar plot showing the total number of rows (Mouse ID/Timepoints) for each drug regimen using Pandas.
@@ -133,7 +136,7 @@ plt.ylabel("# of Observed Mouse Timepoints")
 plt.show()
 
 
-# In[30]:
+# In[56]:
 
 
 # Generate a bar plot showing the total number of rows (Mouse ID/Timepoints) for each drug regimen using pyplot.
@@ -145,7 +148,7 @@ plt.xticks(rotation=45)
 plt.show()
 
 
-# In[32]:
+# In[57]:
 
 
 # Generate a pie plot showing the distribution of female versus male mice using Pandas
@@ -159,7 +162,7 @@ plt.ylabel("")
 plt.show()
 
 
-# In[34]:
+# In[58]:
 
 
 # Generate a pie plot showing the distribution of female versus male mice using pyplot
@@ -172,7 +175,7 @@ plt.show()
 
 # ## Quartiles, Outliers and Boxplots
 
-# In[47]:
+# In[60]:
 
 
 # Calculate the final tumor volume of each mouse across four of the treatment regimens:  
@@ -189,7 +192,7 @@ final_timepoint_df
 merge_final_timepoint_df=final_timepoint_df.merge(cleaned_data, on=["Mouse ID", "Timepoint"], how="left")
 
 
-# In[62]:
+# In[61]:
 
 
 # Put treatments into a list for for loop (and later for plot labels)
@@ -223,7 +226,7 @@ for regimen in promising_regimens:
     print(f"{regimen}'s potential outliers {outliers}")
 
 
-# In[65]:
+# In[62]:
 
 
 # Generate a box plot that shows the distrubution of the tumor volume for each treatment group.
@@ -235,7 +238,7 @@ plt.show()
 
 # ## Line and Scatter Plots
 
-# In[93]:
+# In[63]:
 
 
 # Generate a line plot of tumor volume vs. time point for a single mouse treated with Capomulin
@@ -251,7 +254,7 @@ plt.ylabel("Tumor Volume (mm3)")
 plt.show()
 
 
-# In[96]:
+# In[64]:
 
 
 # Generate a scatter plot of mouse weight vs. the average observed tumor volume for the entire Capomulin regimen
@@ -271,14 +274,14 @@ plt.show()
 
 # ## Correlation and Regression
 
-# In[119]:
+# In[67]:
 
 
 # Calculate the correlation coefficient and a linear regression model 
 # for mouse weight and average observed tumor volume for the entire Capomulin regimen
 
 # Calculate the correlation coefficient between mouse weight and average tumor volume
-correlation = round(st.pearsonr(avg_tumor_volume_weight["Weight (g)"], avg_tumor_volume_weight["Tumor Volume (mm3)"])[0], 2)
+# correlation = round(st.pearsonr(avg_tumor_volume_weight["Weight (g)"], avg_tumor_volume_weight["Tumor Volume (mm3)"])[0], 2)
 
 # correlation = st.pearsonr(avg_tumor_volume_weight["Weight (g)"], avg_tumor_volume_weight["Tumor Volume (mm3)"])
 print(f"Correlation between Weight and Tumor Volume: {correlation}")
